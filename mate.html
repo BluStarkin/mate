@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<!-- Realizado por:
+Angel Medina
+Andrew Garcia -->
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Estimación Puntual y por Intervalo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      width: 80%;
+      margin: 40px auto;
+      padding: 20px;
+      border: 6px solid blue;
+      border-radius: 16px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .input-field {
+      margin-bottom: 20px;
+    }
+    .input-field label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    .input-field input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Estimación Puntual y por Intervalo</h2>
+    <form>
+      <div class="input-field">
+        <label for="media">Media (μ):</label>
+        <input type="number" id="media" required>
+      </div>
+      <div class="input-field">
+        <label for="desviacion">Desviación Estándar (σ):</label>
+        <input type="number" id="desviacion" required>
+      </div>
+      <div class="input-field">
+        <label for="tamaño">Tamaño de la Muestra (n):</label>
+        <input type="number" id="tamaño" required>
+      </div>
+      <div class="input-field">
+        <label for="confianza">Nivel de Confianza (%):</label>
+        <input type="number" id="confianza" required>
+      </div>
+      <button type="button" onclick="calcularEstimacion()">Calcular</button>
+    </form>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function calcularEstimacion() {
+      const media = document.getElementById("media").value;
+      const desviacion = document.getElementById("desviacion").value;
+      const tamaño = document.getElementById("tamaño").value;
+      const confianza = document.getElementById("confianza").value;
+
+      // Cálculo de la estimación puntual
+      const estimacionPuntual = media;
+
+      // Cálculo de la estimación por intervalo
+      const z = getZ(confianza);
+      const errorEstimacion = (z * desviacion) / Math.sqrt(tamaño);
+      const intervaloInferior = estimacionPuntual - errorEstimacion;
+      const intervaloSuperior = estimacionPuntual + errorEstimacion;
+
+      // Mostrar resultados
+      const resultHTML = `
+        <h3>Resultados</h3>
+        <p>Estimación Puntual: ${estimacionPuntual}</p>
+        <p>Intervalo de Confianza: (Intervalo Inferior: ${intervaloInferior},Intervalo Superior: ${intervaloSuperior})</p>
+      `;
+      document.getElementById("result").innerHTML = resultHTML;
+    }
+
+    function getZ(confianza) {
+      // Valores de Z para diferentes niveles de confianza
+      const zValues = {
+        80: 1.28,
+        85: 1.44,
+        90: 1.64,
+        95: 1.96,
+        99: 2.57
+      };
+      return zValues[confianza];
+    }
+  </script>
+
+</body>
+</html>
